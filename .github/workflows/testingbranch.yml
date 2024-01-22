@@ -37,7 +37,7 @@ jobs:
           
       - name: Install npm
         run: npm ci
-        
+          
       - name: Update FHIR Validator build
         run: cd validation-service-fhir-r4; mvn clean package
 

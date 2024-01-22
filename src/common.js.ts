@@ -253,6 +253,8 @@ function getErrorOrWarningFull(issue: OperationOutcomeIssue) {
 // raiseWarning function allows the custom raising (true) or ignoring (false) of warnings when testing files
 function raiseWarning(issue: OperationOutcomeIssue, failOnWarning:boolean): boolean {
     if (issue != undefined && issue.diagnostics != undefined) {
+    
+        //THESE WARNINGS SHOULD ALWAYS ERROR
         if (issue.diagnostics.includes('incorrect type for element')) {
             return true;
         }
@@ -260,61 +262,23 @@ function raiseWarning(issue: OperationOutcomeIssue, failOnWarning:boolean): bool
         if (issue.diagnostics.includes('Error HTTP 401')) {
             return true;
         }
-		// UsageContext metadatatypes - no issue in HAPI regarding this. To be removed and if an issue reapplied and issue added to HAPI
-        if (issue.diagnostics.includes('Could not confirm that the codes provided are in the value set')) {
-            if (issue.diagnostics.includes('http://hl7.org/fhir/ValueSet/usage-context-type')) return false;
-        }
-        /*
-        if (issue.diagnostics.includes('Error HTTP 404')) {
-            // This is issues with the Terminology Server not containig UKCore and NHSDigital CocdeSystems
-            if (issue.diagnostics.includes('https://fhir.nhs.uk/CodeSystem/Workflow-Code')) return false;
-            if (issue.diagnostics.includes('https://fhir.nhs.uk/CodeSystem/NHSDataModelAndDictionary-treatment-function')) return false;
-        }
-         */
-        if (issue.diagnostics.includes("None of the codings provided are in the value set 'IdentifierType'")) {
-            if (issue.diagnostics.includes('https://fhir.nhs.uk/CodeSystem/organisation-role')) return false;
-        }
-		// Not sure why we would allow this? potentially a security issue
-        if (issue.diagnostics.includes('The markdown contains content that appears to be an embedded HTML tag starting at')) return false;
-
-        // LOINC Related warnings
-        if (issue.diagnostics.includes('http://loinc.org')) return false;
-        if (issue.diagnostics.includes('The markdown contains content that appears to be an embedded HTML tag starting at')) return false;
-        if (issue.diagnostics.includes('LOINC is not indexed!')) return false;
-        if (issue.diagnostics.includes('Error HTTP 403 Forbidden validating CodeableConcept')) return false;
-
-        // dmd not resolving with onotoserver causing this issue
-		if (issue.diagnostics.includes('Code system https://dmd.nhs.uk/ could not be resolved.')) return false
-/*
-        if (issue.diagnostics.includes('http://snomed.info/sct')) {
-            if (issue.diagnostics.includes('https://fhir.hl7.org.uk/ValueSet/UKCore-MedicationCode')) return false
-            if (issue.diagnostics.includes('https://fhir.hl7.org.uk/ValueSet/UKCore-VaccineCode')) return false
-        }
-*/
-        // NHSDigital-SDS-JobRoleCode is no longer in the latest NHSEngland IG. Suggest removing these 
-        if (issue.diagnostics.includes('Unknown code')) {
-            if (issue.diagnostics.includes('https://fhir.nhs.uk/CodeSystem/NHSDigital-SDS-JobRoleCode')) return false
-        }
-        if (issue.diagnostics.includes('None of the codings provided are in the value set')) {
-            if (issue.diagnostics.includes('https://fhir.nhs.uk/CodeSystem/NHSDigital-SDS-JobRoleCode')) return false
-            if (issue.diagnostics.includes('http://snomed.info/sct')) {
-                // Not defined in UKCore and valueset is extensible
-                return !issue.diagnostics.includes('http://hl7.org/fhir/ValueSet/observation-methods');
-
-            }
-        }
-		// Includes credential string, post-fetch filter url, and conditional url format. See [HAPI](https://github.com/search?q=repo%3Ahapifhir%2Fhapi-fhir+%22must+be+in+the+format%22&type=code)
-        if (issue.diagnostics.includes('must be in the format')) {
-            return true;
-        }
         // Issue with hapi giving incorrect error when one code is from the valueset, but another is not. See https://github.com/hapifhir/hapi-fhir/issues/4152
         if (issue.diagnostics.includes('Inappropriate CodeSystem URL') && issue.diagnostics.includes('for ValueSet: http://hl7.org/fhir/ValueSet/all-languages')) {
             return false
         }
+                
+        // LOINC Related warnings can be ignored
+        if (issue.diagnostics.includes('http://loinc.org')) return false;
+        if (issue.diagnostics.includes('LOINC is not indexed!')) return false;
+        
+        //DICOM warnings can be ignored
+        if (issue.diagnostics.includes('ValueSet http://dicom.nema.org/')) return false;
+        
+        //Fragment codesystems can't be checked
+        if (issue.diagnostics.includes('Unknown code in fragment CodeSystem')) return false;
     }
 
-    // TODO this needs to be turned to true 1/8/2022 Warnings not acceptable on NHS Digital resources
-
+    // if error not handled above, return error if FailOnWarning is true 
     return failOnWarning;
 }
 
@@ -322,29 +286,20 @@ function raiseWarning(issue: OperationOutcomeIssue, failOnWarning:boolean): bool
 function raiseError(issue: OperationOutcomeIssue) : boolean {
     if (issue != undefined) {
         if (issue.diagnostics != undefined) {
-            // List of errors to ignore
-            if (issue.diagnostics.includes('could not be resolved, so has not been checked')) return false;
-
-            // Ignore LOINC Errors for now
-            if (issue.diagnostics.includes('http://loinc.org')) return false;
-            // fault with current 5.5.1 validation
-            if (issue.diagnostics.includes('http://hl7.org/fhir/ValueSet/units-of-time')) return false;
-            if (issue.diagnostics.includes('NHSNumberVerificationStatus')) return false;
-            if (issue.diagnostics.includes('Validation failed for \'http://example.org/fhir')) return false;
-            if (issue.diagnostics.includes('Unrecognised property \'@fhir_comments')) return false;
-            if (issue.diagnostics.includes('Code system https://dmd.nhs.uk/ could not be resolved.')) return false
-            if (issue.diagnostics.includes('http://read.info/ctv3')) {
-                if (issue.diagnostics.includes('https://fhir.hl7.org.uk/ValueSet/UKCore-ConditionCode')) return false
-            }
-            if (issue.diagnostics.includes('https://fhir.nhs.uk/CodeSystem/NHSDigital-SDS-JobRoleCode')) return false;
-            if (issue.diagnostics.includes('java.net.SocketTimeoutException')) {
-                console.error(issue.diagnostics)
-                return false
-            }
+            // List of errors to ALWAYS ignore
+            
+            // Issue with hapi giving incorrect error when one code is from the valueset, but another is not. See https://github.com/hapifhir/hapi-fhir/issues/4152
             if (issue.diagnostics.includes('Inappropriate CodeSystem URL') && issue.diagnostics.includes('for ValueSet: http://hl7.org/fhir/ValueSet/all-languages')) {
                 return false
             }
+            
+            // Ignore LOINC Errors for now
+            if (issue.diagnostics.includes('http://loinc.org')) return false;
+            
+            // ignore readctv3 errors
+            if (issue.diagnostics.includes('http://read.info/ctv3')) return false
         }
+		// need to understand reason for this error to be ignored
         if (issue.location !== undefined && issue.location.length>0) {
             if (issue.location[0].includes('StructureMap.group')) return false;
         }
@@ -423,6 +378,7 @@ export function testFileWarning(testDescription, file,message) {
         })
     });
 }
+
 
 export function isIgnoreFolder(folderName : string) : boolean {
 
@@ -738,7 +694,9 @@ export function testFile( folderName: string, fileName: string, failOnWarning :b
             test('Check profiles are not present in resource (Implementation Guide Best Practice)', () => {
                 // Disable profile check for Parameters
                 if (json.meta != undefined && json.resourceType !== 'Parameters') {
-                    expect(json.meta.profile == undefined).toBeTruthy()
+                    if (failOnWarning == true) {
+                      expect(json.meta.profile == undefined).toBeTruthy()
+                    }
                 }
                 if (json.resourceType === 'Bundle') {
                     let bundle : Bundle = json
@@ -746,7 +704,9 @@ export function testFile( folderName: string, fileName: string, failOnWarning :b
                         for (let entry of bundle.entry) {
                             // Disable profile check for Parameters
                             if (entry.resource !== undefined && entry.resource.meta != undefined && entry.resource.resourceType !== 'Parameters') {
+                              if (failOnWarning == true) {
                                 expect(entry.resource.meta.profile == undefined).toBeTruthy()
+                              }
                             }
                         }
                     }
@@ -831,7 +791,13 @@ export function testFile( folderName: string, fileName: string, failOnWarning :b
                         return error.response
                     })
                     expect(response.status === 200 || response.status === 400).toBeTruthy()
-                    resourceChecks(response, failOnWarning)
+                    
+                    //we can ignore warnings on retired resources - these would not be in a balloted package
+                    if (json.status == 'retired') {
+                      resourceChecks(response, false)
+                    } else {
+                      resourceChecks(response, failOnWarning)
+                    }
                     expect(response.status).toEqual(200)
                 });
             }

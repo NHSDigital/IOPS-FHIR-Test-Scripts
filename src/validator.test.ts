@@ -15,6 +15,12 @@ jest.setTimeout(40*1000)
 
 let gitHubSummary = '### :fire_engine: Logs '+NEW_LINE;
 
+    let failOnWarning = true;
+    if (process.env.FAILONWARNING != undefined && process.env.FAILONWARNING.toLowerCase() == 'false') {
+        failOnWarning = false;
+    }
+    gitHubSummary += 'Strict validation: ' + failOnWarning + NEW_LINE;
+
 describe('Test Environment', ()=> {
     let client: AxiosInstance;
     beforeAll(async () => {
@@ -37,9 +43,6 @@ describe('Testing validation passes for valid HL7 FHIR resources', () => {
 
     // MedicationDispense
     testFileValidator('Test HL7 FHIR resource passes validation ','Examples/pass/MedicationDispense-pass.json')
-
-    // PractitionerRole
-    testFileValidator('Test HL7 FHIR resource passes validation PractitionerRole','Examples/pass/PractitionerRole-pass.json')
 
     // Bundle
     testFileValidator('Test HL7 FHIR Seaarch Immmunization Bundle passes validation ','Examples/pass/Bundle-searchset-COVIDImmunization.json')

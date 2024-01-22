@@ -68,8 +68,8 @@
           "coding": [
             {
               "system": "http://snomed.info/sct",
-              "code": "1240471000000102",
-              "display": "Measurement of COVID-19 antigen"
+              "code": "1156860005",
+              "display": "Rapid antigen detection immunoassay technique"
             }
           ]
         },
@@ -169,8 +169,8 @@
           "coding": [
             {
               "system": "http://snomed.info/sct",
-              "code": "1240471000000102",
-              "display": "Measurement of 2019-nCoV antigen"
+              "code": "1156860005",
+              "display": "Rapid antigen detection immunoassay technique"
             }
           ]
         },
