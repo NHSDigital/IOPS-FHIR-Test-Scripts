@@ -6,7 +6,7 @@
     "start": "ts-node src/configureValidator.ts"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.11",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.11.6",
     "axios": "^1.6.5",
     "decompress": "^4.2.1",
