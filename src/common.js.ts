@@ -280,8 +280,6 @@ function raiseWarning(issue: OperationOutcomeIssue, failOnWarning:boolean): bool
         //Fragment codesystems can't be checked
         if (issue.diagnostics.includes('Unknown code in fragment CodeSystem')) return false;
 
-	//Hide errors relating to finding codes from system:http://human-phenotype-ontology.org as these are not within the Terminology server
-	if (issue.diagnostics.includes('Validation failed for \'http://human-phenotype-ontology.org')) return false;
     }
 
     // if error not handled above, return error if FailOnWarning is true 
@@ -312,6 +310,9 @@ function raiseError(issue: OperationOutcomeIssue) : boolean {
 
 	    //Hide errors relating to finding codes from system:http://human-phenotype-ontology.org as these are not within the Terminology server
 	    if (issue.diagnostics.includes('Validation failed for \'http://human-phenotype-ontology.org')) return false;
+
+	    // Issue with GitHub validator requiring code to be in CodeSystem asset when there is none. No issues with the validator itself. The ValueSet in question is https://terminology.hl7.org/5.5.0/CodeSystem-v3-hgvs.html    
+	    if (issue.diagnostics.includes('http://varnomen.hgvs.org')) return false;
         }
         if (issue.location !== undefined && issue.location.length>0) {
             if (issue.location[0].includes('StructureMap.group')) return false;
