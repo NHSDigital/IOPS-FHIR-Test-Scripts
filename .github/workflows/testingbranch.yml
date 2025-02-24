@@ -46,20 +46,22 @@ jobs:
       - name: Update FHIR Validator build
         run: cd validation-service-fhir-r4; mvn clean package
 
-      - name: Start and Wait for HAPI FHIR Server
+      - name: Start HAPI FHIR Server
         run: |
           nohup java -jar validation-service-fhir-r4/target/fhir-validator.jar --terminology.url=https://ontology.nhs.uk/production1/fhir --terminology.authorization.tokenUrl=https://ontology.nhs.uk/authorisation/auth/realms/nhs-digital-terminology/protocol/openid-connect/token --terminology.authorization.clientId=*** --terminology.authorization.clientSecret=*** --aws.validationSupport=false --aws.queueEnabled=false > fhir.log 2>&1 &
-    
           echo $! > fhir.pid  # Save the process ID
-          echo "FHIR Server started, waiting for it to be ready..."
-    
-          # Wait for the server to be available
+          sleep 5  # Give it some time to start
+          tail -f fhir.log &  # Keep logging output
+          wait $(cat fhir.pid)  # Keep the job alive
+
+      - name: Wait for HAPI FHIR Server to be Ready
+        run: |
+          echo "Waiting for FHIR server..."
           while ! curl --silent --fail http://localhost:8080/fhir/metadata > /dev/null; do
             echo "Still waiting..."
             sleep 5
           done
-    
-          echo "FHIR server is up and running!"
+          echo "FHIR server is up!"
         
       - name: Run Test
         run: npm run integration-test
