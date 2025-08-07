@@ -275,7 +275,7 @@ for path in paths:
         continue
     for file in files:
         warnings = []
-        if 'StructureDefintion-ext-' in file: # ignore any file brought in via hl7.fhir.uv.xver-.. packages. This is temp until the package is added to the fhir registry
+        if 'ext-' in file: # ignore any file brought in via hl7.fhir.uv.xver-.. packages. This is temp until the package is added to the fhir registry
             continue
         if file.endswith("xml"):
             root,warnings = openXMLFile(path,file,warnings)
