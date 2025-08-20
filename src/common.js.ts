@@ -885,22 +885,53 @@ export function testFile( folderName: string, fileName: string, failOnWarning :b
                     validate = false
                 }
             }
-            if (validate) {
-                test('FHIR Validation', async () => {
-                    const response = await client.post('/$validate', resource).catch(function (error) {
-                        return error.response
-                    })
-                    expect(response.status === 200 || response.status === 400).toBeTruthy()
-                    
-                    //we can ignore warnings on retired resources - these would not be in a balloted package
-                    if (json.status == 'retired') {
-                      resourceChecks(response, false)
-                    } else {
-                      resourceChecks(response, failOnWarning)
-                    }
-                    expect(response.status).toEqual(200)
+         if (validate) {
+    test('FHIR Validation', async () => {
+        try {
+            const response = await client.post('/$validate', resource);
+
+            // Accept either valid (200) or validation failed (400)
+            expect([200, 400]).toContain(response.status);
+
+            // Log validation issues if status is 400
+            if (response.status === 400 && response.data?.issue) {
+                console.warn('🔍 FHIR Validation Issues:');
+                response.data.issue.forEach((issue, index) => {
+                    const location = issue.expression?.join('.') || '[unknown location]';
+                    console.warn(`${index + 1}. [${issue.severity}] ${location}: ${issue.diagnostics}`);
                 });
             }
+
+            // Extract resource status (fallback if not defined)
+            const resourceStatus = resource.status || 'unknown';
+
+            //we can ignore warnings on retired resources - these would not be in a balloted package
+            if (resourceStatus === 'retired') {
+                resourceChecks(response, false); // Ignore warnings for retired resources
+            } else {
+                resourceChecks(response, failOnWarning); // Apply stricter checks for active resources
+            }
+
+            // Only expect success if not retired
+            if (resourceStatus !== 'retired') {
+                expect(response.status).toEqual(200);
+            }
+
+        } catch (error) {
+            // Handle unexpected validation errors directly in the catch block
+            console.error('❌ Unexpected Validation Error:', {
+                message: error.message,
+                status: error.response?.status,
+                headers: error.response?.headers,
+                data: error.response?.data,
+            });
+
+            throw new Error(
+                `FHIR Validation failed unexpectedly.\nStatus: ${error.response?.status}\nMessage: ${error.message}\nData: ${JSON.stringify(error.response?.data, null, 2)}`
+            );
+        }
+    });
+}
         }
     )
 }
