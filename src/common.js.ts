@@ -890,7 +890,10 @@ export function testFile( folderName: string, fileName: string, failOnWarning :b
                     const response = await client.post('/$validate', resource).catch(function (error) {
                         return error.response
                     })
-                    expect(response.status === 200 || response.status === 400).toBeTruthy()
+                    if (!response) {
+                        console.error("FHIR call did not return a response object");
+                    }
+                    expect(response && (response.status === 200 || response.status === 400)).toBeTruthy();
                     
                     //we can ignore warnings on retired resources - these would not be in a balloted package
                     if (json.status == 'retired') {
