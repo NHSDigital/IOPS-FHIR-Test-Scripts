@@ -70,7 +70,7 @@ jobs:
         run: |
           nohup java -jar validation-service-fhir-r4/target/fhir-validator.jar --terminology.url=https://ontology.nhs.uk/production1/fhir --terminology.authorization.tokenUrl=https://ontology.nhs.uk/authorisation/auth/realms/nhs-digital-terminology/protocol/openid-connect/token --terminology.authorization.clientId=${{ secrets.ONTO_CLIENT_ID }} --terminology.authorization.clientSecret=${{ secrets.ONTO_CLIENT_SECRET }} --aws.validationSupport=false --aws.queueEnabled=false &
           # Wait for it to become ready, try 30 times, with 10 seconds between
-          for i in {1..30}; do
+          for i in {1..60}; do
             if curl -sSf http://localhost:8080/fhir/metadata > /dev/null; then
               echo "FHIR Validator is up!"
               exit 0
