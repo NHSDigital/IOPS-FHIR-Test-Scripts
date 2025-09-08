@@ -311,8 +311,8 @@ function raiseError(issue: OperationOutcomeIssue) : boolean {
 	    //Hide errors relating to finding codes from system:http://human-phenotype-ontology.org as these are not within the Terminology server
 	    if (issue.diagnostics.includes('Validation failed for \'http://human-phenotype-ontology.org')) return false;
 
-	    // Issue with GitHub validator requiring code to be in CodeSystem asset when there is none. No issues with the validator itself. The ValueSet in question is https://terminology.hl7.org/5.5.0/CodeSystem-v3-hgvs.html    
-	    if (issue.diagnostics.includes('http://varnomen.hgvs.org')) return false;
+	    // Issue with GitHub validator requiring code to be in CodeSystem asset when there is none. No issues with the validator itself. The ValueSets in question are https://terminology.hl7.org/5.5.0/CodeSystem-v3-hgvs.html and https://terminology.hl7.org/6.4.0/CodeSystem-SO.html   
+	    if (issue.diagnostics.includes('http://varnomen.hgvs.org') || issue.diagnostics.includes('http://www.sequenceontology.org')) return false;
         }
         if (issue.location !== undefined && issue.location.length>0) {
             if (issue.location[0].includes('StructureMap.group')) return false;
