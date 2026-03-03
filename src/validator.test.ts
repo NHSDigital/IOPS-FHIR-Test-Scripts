@@ -7,8 +7,10 @@ import fs from "fs";
 
 
 
-const args = require('minimist')(process.argv.slice(2))
+// Retry flaky specs (e.g., when the terminology endpoint is slow)
+jest.retryTimes(2, { logErrorsBeforeRetry: true });
 
+const args = require('minimist')(process.argv.slice(2))
 
 let terminology = true;
 jest.setTimeout(120_000)
