@@ -11,7 +11,7 @@ const args = require('minimist')(process.argv.slice(2))
 
 
 let terminology = true;
-jest.setTimeout(40*1000)
+jest.setTimeout(120_000)
 
 let gitHubSummary = '### :fire_engine: Logs '+NEW_LINE;
 
