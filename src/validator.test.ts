@@ -6,12 +6,16 @@ import {AxiosInstance} from "axios";
 import fs from "fs";
 
 
+// Retry: This lines address the "$validate-code" read timeoout (e.g., when the terminology endpoint is slow)
+jest.retryTimes(2, { logErrorsBeforeRetry: true });
+
+// Retry flaky specs (e.g., when the terminology endpoint is slow)
+jest.retryTimes(2, { logErrorsBeforeRetry: true });
 
 const args = require('minimist')(process.argv.slice(2))
 
-
 let terminology = true;
-jest.setTimeout(40*1000)
+jest.setTimeout(120_000)
 
 let gitHubSummary = '### :fire_engine: Logs '+NEW_LINE;
 
