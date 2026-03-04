@@ -6,8 +6,11 @@ import {describe, expect, jest} from "@jest/globals";
 import axios, {AxiosInstance} from "axios";
 import * as console from "console";
 
+// Retry: This lines address the "$validate-code" read timeoout (e.g., when the terminology endpoint is slow)
+jest.retryTimes(2, { logErrorsBeforeRetry: true });
+
 // Initial terminology queries can take a long time to process - cached responses are much more responsive
-jest.setTimeout(40*1000)
+jest.setTimeout(120_000)
 
 
 let gitHubSummary = '### :fire_engine: Logs '+NEW_LINE;
