@@ -1,0 +1,46 @@
+<ConceptMap xmlns="http://hl7.org/fhir">
+    <id value="England-DeviatingResultIndicator" />
+    <url value="https://fhir.nhs.uk/England/ConceptMap/England-DeviatingResultIndicator" />
+    <version value="0.1.0" />
+    <name value="EnglandDeviatingResultIndicator" />
+    <title value="England Deviating Result Indicator" />
+    <status value="draft" />
+    <date value="2026-01-26" />
+    <publisher value="NHS England" />
+    <contact>
+        <name value="NHS England" />
+        <telecom>
+            <system value="email" />
+            <value value="interoperabilityteam@nhs.net" />
+            <use value="work" />
+            <rank value="1" />
+        </telecom>
+    </contact>
+    <description value="A set of codes that convert those in the value set for the EDIFACT Deviating Result Indicator (also known as the Result Normalcy Indicator) to FHIR ObservationInterpretation. The relevant sections from the PMIP EDIFACT (NHS003) specification are included below for reference:\n- ‘LSR_04_A_001.doc’\n- ‘LSR_03_B_001.doc’ :" />
+    <copyright value="Copyright © 2023+ NHS England Licensed under the Apache License, Version 2.0 (the \&quot;License\&quot;); you may not use this file except in compliance with the License. You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \&quot;AS IS\&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. HL7® FHIR® standard Copyright © 2011+ HL7 The HL7® FHIR® standard is used under the FHIR license. You may obtain a copy of the FHIR license at  https://www.hl7.org/fhir/license.html." />
+    <sourceUri value = "https://webarchive.nationalarchives.gov.uk/ukgwa/20150107145848/http://www.isb.nhs.uk/documents/isb-1557/amd-39-2003" />  
+    <targetCanonical value = "http://hl7.org/fhir/ValueSet/observation-interpretation" />
+        <group>
+            <source value = "https://webarchive.nationalarchives.gov.uk/ukgwa/20150107145848/http://www.isb.nhs.uk/documents/isb-1557/amd-39-2003" />
+            <target value = "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation" />
+            <element>
+                <code value = "HI" />
+                <display value = "High" />
+                <target>
+                    <code value = "H" />
+                    <display value = "High" />
+                    <equivalence value = "equivalent" />
+                </target>
+            </element>
+            <element>
+                <code value = "LO" />
+                <display value = "Low" />
+                <target>
+                    <code value = "L" />
+                    <display value = "Low" />
+                    <equivalence value = "equivalent" />
+                </target>
+            </element>
+        </group>
+</ConceptMap>
+    

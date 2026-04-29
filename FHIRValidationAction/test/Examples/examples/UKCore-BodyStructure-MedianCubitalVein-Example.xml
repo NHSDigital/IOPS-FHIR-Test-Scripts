@@ -1,0 +1,26 @@
+<BodyStructure xmlns="http://hl7.org/fhir">
+  <id value="UKCore-BodyStructure-MedianCubitalVein-Example" />
+  <text>
+      <status value="additional" />
+      <div xmlns="http://www.w3.org/1999/xhtml">An example to illustrate a body structure of a vein</div>
+  </text>
+  <location>
+    <coding>
+      <system value="http://snomed.info/sct" />
+      <code value="49852007" />
+      <display value="Structure of median cubital vein" />
+    </coding>
+    <text value="Forearm" />
+  </location>
+  <locationQualifier>
+    <coding>
+      <system value="http://snomed.info/sct" />
+      <code value="419161000" />
+      <display value="Unilateral left" />
+    </coding>
+    <text value="Left" />
+  </locationQualifier>
+  <patient>
+    <reference value="Patient/UKCore-Patient-RichardSmith-Example" />
+  </patient>
+</BodyStructure>

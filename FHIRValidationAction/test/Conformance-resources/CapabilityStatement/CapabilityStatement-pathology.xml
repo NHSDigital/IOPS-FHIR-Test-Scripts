@@ -1,0 +1,56 @@
+<CapabilityStatement xmlns="http://hl7.org/fhir">
+  <id value="England-Pathology-Requirements" />
+  <url value="https://fhir.hl7.org.uk/England/CapabilityStatement/England-Pathology-Requirements" />
+  <version value="0.0.2" />
+  <name value="EnglandPathologyRequirements" />
+  <status value="draft" />
+  <date value="2024-03-20" />
+  <publisher value="HL7 UK" />
+  <description value="Conformance requirements for NHS England Pathology FHIR Examples" />
+  <kind value="requirements" />
+  <fhirVersion value="4.0.1" />
+  <format value="application/fhir+json" />
+  <rest>
+    <mode value="server" />
+        <resource>
+      <type value="Bundle" />
+      <profile value="http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab" />
+    </resource>
+        <resource>
+      <type value="Composition" />
+      <profile value="http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab" />
+    </resource>
+    <resource>
+      <type value="DiagnosticReport" />
+      <profile value="http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab" />
+    </resource>
+        <resource>
+      <type value="Observation" />
+      <profile value="https://fhir.nhs.uk/England/StructureDefinition/England-Observation-Lab-Pathology" />
+    </resource>
+        <resource>
+      <type value="Organization" />
+      <profile value="https://fhir.hl7.org.uk/StructureDefinition/UKCore-Organization" />
+    </resource>
+        <resource>
+      <type value="Patient" />
+      <profile value="https://fhir.hl7.org.uk/StructureDefinition/UKCore-Patient" />
+    </resource>
+    <resource>
+      <type value="Practitioner" />
+      <profile value="https://fhir.hl7.org.uk/StructureDefinition/UKCore-Practitioner" />
+    </resource>
+    <resource>
+      <type value="PractitionerRole" />
+      <profile value="https://fhir.hl7.org.uk/StructureDefinition/UKCore-PractitionerRole" />
+    </resource>
+        <resource>
+      <type value="ServiceRequest" />
+      <profile value="http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab" />
+    </resource>
+    <resource>
+      <type value="Specimen" />
+      <profile value="http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab" />
+    </resource>
+  </rest>
+</CapabilityStatement>

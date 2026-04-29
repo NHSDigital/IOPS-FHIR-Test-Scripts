@@ -1,0 +1,21 @@
+<Medication xmlns="http://hl7.org/fhir">
+    <id value="UKCore-Medication-TimololVTM-Example" />
+  <text>
+    <status value="additional" />
+    <div xmlns="http://www.w3.org/1999/xhtml">An example to illustrate the form element with VTM via Timolol medicine</div>
+  </text>
+    <code>
+        <coding>
+            <system value="https://dmd.nhs.uk" />
+            <code value="777773007" />
+            <display value="Timolol" />
+        </coding>
+    </code>
+    <form>
+        <coding>
+            <system value="http://snomed.info/sct" />
+            <code value="17960711000001109" />
+            <display value="Ear/eye drops solution" />
+        </coding>
+    </form>
+</Medication>

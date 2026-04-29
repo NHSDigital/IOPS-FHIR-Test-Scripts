@@ -1,0 +1,31 @@
+<Practitioner xmlns="http://hl7.org/fhir">
+  <id value="UKCore-Practitioner-DoctorPaulRastall-Example" />
+  <text>
+    <status value="additional" />
+    <div xmlns="http://www.w3.org/1999/xhtml">An example to illustrate  a practitioner who is a doctor</div>
+  </text>
+  <identifier>
+    <system value="https://fhir.hl7.org.uk/Id/gmp-number" />
+    <value value="G12345678" />
+  </identifier>
+  <name>
+    <family value="Rastall" />
+    <given value="Paul" />
+    <prefix value="Dr" />
+  </name>
+  <telecom>
+    <system value="phone" />
+    <value value="0113 6323200" />
+    <use value="work" />
+  </telecom>
+  <address>
+    <use value="work" />
+    <type value="both" />
+    <line value="Chapel Main Practice" />
+    <line value="22 Brightside Crescent" />
+    <city value="Overtown" />
+    <district value="West Yorkshire" />
+    <postalCode value="LS10 4YU" />
+  </address>
+  <gender value="male" />
+</Practitioner>

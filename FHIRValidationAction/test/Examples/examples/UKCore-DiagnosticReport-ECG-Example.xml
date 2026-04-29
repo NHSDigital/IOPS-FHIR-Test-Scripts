@@ -1,0 +1,44 @@
+<DiagnosticReport xmlns="http://hl7.org/fhir">
+  <id value="UKCore-DiagnosticReport-ECG-Example" />
+  <text>
+      <status value="additional" />
+      <div xmlns="http://www.w3.org/1999/xhtml">An example to illustrate a diagnostic report in PDF, for an ECG</div>
+  </text>
+  <identifier>
+    <system value="https://tools.ietf.org/html/rfc4122" />
+    <value value="727071dc-eb01-4224-8ee8-cc0a02978792" />
+  </identifier>
+  <basedOn>
+    <reference value="ServiceRequest/UKCore-ServiceRequest-ECG-Example" />
+    <display value="12 Lead ECG" />
+  </basedOn>
+  <status value="unknown" />
+  <category>
+    <coding>
+      <system value="http://terminology.hl7.org/CodeSystem/v2-0074" />
+      <code value="EC" />
+      <display value="Electrocardiac (e.g., EKG, EEC, Holter)" />
+    </coding>
+  </category>
+  <code>
+    <coding>
+      <system value="http://snomed.info/sct" />
+      <code value="1129261000000102" />
+      <display value="Cardiac electrophysiology report" />
+    </coding>
+  </code>
+  <subject>
+    <reference value="Patient/UKCore-Patient-RichardSmith-Example" />
+  </subject>
+  <issued value="2024-02-23T10:11:11+00:00" />
+  <performer>
+    <reference value="Organization/UKCore-Organization-LeedsTeachingHospital-Example" />
+    <display value="LEEDS TEACHING HOSPITALS NHS TRUST" />
+  </performer>
+  <presentedForm>
+    <contentType value="application/pdf" />
+    <language value="en" />
+    <data value="VUsgQ29yZSBkZXZlbG9wbWVudCB0ZWFtIGhhdmUgc2tpcHBlZCB0aGUgYmFzZTY0IHN0cmluZyBkYXRhIHZhbHVlIGZvciBiZXR0ZXIgcmVhZGFiaWxpdHkgb2YgdGhlIHJlc291cmNl" />
+  <!--UK Core development team have skipped the base64 string data value for better readability of the resource-->
+  </presentedForm>
+</DiagnosticReport>

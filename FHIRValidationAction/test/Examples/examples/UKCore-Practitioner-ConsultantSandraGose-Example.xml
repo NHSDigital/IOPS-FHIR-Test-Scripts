@@ -1,0 +1,30 @@
+<Practitioner xmlns="http://hl7.org/fhir">
+  <id value="UKCore-Practitioner-ConsultantSandraGose-Example" />
+  <text>
+    <status value="additional" />
+    <div xmlns="http://www.w3.org/1999/xhtml">An example to illustrate a practitioner who is a consultant</div>
+  </text>
+  <identifier>
+    <system value="https://fhir.hl7.org.uk/Id/gmc-number" />
+    <value value="C12345678" />
+  </identifier>
+  <name>
+    <family value="Gose" />
+    <given value="Sandra" />
+    <prefix value="Mrs" />
+  </name>
+  <telecom>
+    <system value="phone" />
+    <value value="0113 6323211" />
+    <use value="work" />
+  </telecom>
+  <address>
+    <line value="Admissions Department" />
+    <line value="ST. JAMES'S UNIVERSITY HOSPITAL" />   
+    <line value="BECKETT STREET" />
+    <city value="LEEDS" />
+    <postalCode value="LS9 7TF" />
+    <country value="ENGLAND" />
+  </address>
+  <gender value="female" />
+</Practitioner>

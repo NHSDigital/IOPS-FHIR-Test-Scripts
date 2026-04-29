@@ -1,0 +1,19 @@
+<Observation xmlns="http://hl7.org/fhir">
+  <id value="UKCore-Observation-AwarenessOfDiagnosis-Example" />
+  <text>
+    <status value="additional" />
+    <div xmlns="http://www.w3.org/1999/xhtml">An example to illustrate an observation of the awareness of diagnosis</div>
+  </text>
+  <status value="final" />
+  <code>
+    <coding>
+      <system value="http://snomed.info/sct" />
+      <code value="162564003" />
+      <display value="Awareness of diagnosis" />
+    </coding>
+  </code>
+  <subject>
+    <reference value="Patient/UKCore-Patient-RichardSmith-Example" />
+  </subject>
+  <effectiveInstant value="2019-12-10T13:00:00+00:00" />
+</Observation>
