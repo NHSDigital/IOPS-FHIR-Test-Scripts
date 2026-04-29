@@ -1,80 +1,68 @@
 name: IOPS-FHIR-Validation-Terminology
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  # Allows you to run this workflow manually from the Actions tab
-
   workflow_call:
     secrets:
       ONTO_CLIENT_ID:
         required: true
       ONTO_CLIENT_SECRET:
         required: true
-      FAILONWARNING:
-        required: false
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: true
-      
-      - uses: actions/setup-java@v4
+
+      - uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: '21'
-      
+
       - name: Check out IOPS-Validation
-        uses: actions/checkout@master
+        uses: actions/checkout@v6
         with:
-          repository: NHSDigital/IOPS-FHIR-Test-Scripts # orignally known as NHSDigital/IOPS-Validation
+          repository: NHSDigital/IOPS-FHIR-Test-Scripts/FHIRValidationAction
           path: validation
 
       - name: Check out validation-service-fhir-r4
-        uses: actions/checkout@master
+        uses: actions/checkout@v6
         with:
-          repository: NHSDigital/IOPS-FHIR-Validation-Service
+          repository: NHSDigital/FHIR-Validation
           ref: main
           path: validation-service-fhir-r4
-      
-      - name: Cache Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2-
-                    
-      - name: Install npm
-        run: cd validation && npm ci
-        
-      - name: Configure FHIR Validator
-        run: cd validation && npm start
+
+      - name: Debug XML file
+        run: |
+          FILE="valuesets/ValueSet-UKCore-ListCode.xml"
+          echo "File size: $(wc -c < "$FILE")"
+          echo "Last 5 lines:"
+          tail -5 "$FILE"
+          echo "Line endings: $(file "$FILE")"
+
+      - name: Build validation service
+        run: |
+          cd validation-service-fhir-r4
+          mvn -B -ntp package
+
+      - name: Start Validation Service
+        run: |
+          cd validation-service-fhir-r4
+          docker compose up -d
         env:
           CI: true
+          ONTO_AUTH_URL: https://ontology.nhs.uk/authorisation/auth/realms/nhs-digital-terminology/protocol/openid-connect/token
+          ONTO_SERVER_URL: https://ontology.nhs.uk/production1/fhir
           ONTO_CLIENT_ID: ${{ secrets.ONTO_CLIENT_ID }}
           ONTO_CLIENT_SECRET: ${{ secrets.ONTO_CLIENT_SECRET }}
-      
-      - name: Build FHIR 
-        env:
-          MAVEN_OPTS: -Xmx8G
-        run: cd validation-service-fhir-r4 && mvn -DskipTests clean package
 
-      - name: Run FHIR Validator
+      - name: Wait for FHIR Validator to be available
         run: |
-          nohup java -Xms2G -Xmx8G -jar validation-service-fhir-r4/target/fhir-validator.jar --terminology.url=https://ontology.nhs.uk/production1/fhir --terminology.authorization.tokenUrl=https://ontology.nhs.uk/authorisation/auth/realms/nhs-digital-terminology/protocol/openid-connect/token --terminology.authorization.clientId=${{ secrets.ONTO_CLIENT_ID }} --terminology.authorization.clientSecret=${{ secrets.ONTO_CLIENT_SECRET }} --aws.validationSupport=false --aws.queueEnabled=false &
-          # Wait for it to become ready, try 30 times, with 10 seconds between
           for i in {1..60}; do
-            if curl -sSf http://localhost:9001/metadata > /dev/null || \
-               curl -sSf http://localhost:9001/fhir/metadata > /dev/null; then
+            if curl -sSf http://localhost:8080/fhir/metadata > /dev/null; then
               echo "FHIR Validator is up!"
               exit 0
             fi
@@ -84,8 +72,28 @@ jobs:
 
           echo "FHIR Validator failed to start in time"
           exit 1
-        
-      - name: Run Test
-        run: cd validation && npm test
-        env:
-          FAILONWARNING: ${{ secrets.FAILONWARNING }}
+      
+      - name: Debug directory
+        run: |
+          pwd
+          ls -la
+      
+      - name: Install FHIR packages
+        run: python3 validation/scripts/configure-packages.py
+
+      - name: Upload FHIR assets + Examples
+        run: python3 validation/scripts/upload-assets.py
+
+      - name: Debug - Check ValueSet uploaded
+        run: |
+          curl -s "http://localhost:8080/fhir/ValueSet?url=https://fhir.hl7.org.uk/ValueSet/UKCore-CareSettingType" | python3 -m json.tool | grep -E '"total"|"id"|"url"'
+
+      - name: Generate validation report
+        if: always()
+        run: python3 validation/scripts/generate-report.py
+
+      - name: Stop Validation Service
+        if: always()
+        run: |
+          cd validation-service-fhir-r4
+          docker compose down
