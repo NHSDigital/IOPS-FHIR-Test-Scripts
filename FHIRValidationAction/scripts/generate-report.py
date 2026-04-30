@@ -9,7 +9,7 @@ import sys
 #ROOT = Path.cwd()
 
 #for github repo
-ROOT = Path.cwd() / "validation"
+ROOT = Path.cwd() / "validation" / "FHIRValidationAction"
 
 def parse_validation_output(results_file, ignore_list):
     with open(results_file) as f:
