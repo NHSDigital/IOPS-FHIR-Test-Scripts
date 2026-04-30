@@ -26,6 +26,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: NHSDigital/IOPS-FHIR-Test-Scripts
+          ref: docker-img
           sparse-checkout: FHIRValidationAction
           path: validation
 
@@ -33,7 +34,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: NHSDigital/FHIR-Validation
-          ref: main
+          ref: docker-img
           path: validation-service-fhir-r4
 
       - name: Build validation service
@@ -68,14 +69,14 @@ jobs:
           exit 1
            
       - name: Install FHIR packages
-        run: python3 validation/scripts/configure-packages.py
+        run: python3 validation/FHIRValidationAction/scripts/configure-packages.py
 
       - name: Upload FHIR assets + Examples
-        run: python3 validation/scripts/upload-assets.py
+        run: python3 validation/FHIRValidationAction/scripts/upload-assets.py
 
       - name: Generate validation report
         if: always()
-        run: python3 validation/scripts/generate-report.py
+        run: python3 validation/FHIRValidationAction/scripts/generate-report.py
 
       - name: Stop Validation Service
         if: always()
