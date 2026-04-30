@@ -25,7 +25,8 @@ jobs:
       - name: Check out IOPS-Validation
         uses: actions/checkout@v6
         with:
-          repository: NHSDigital/IOPS-FHIR-Test-Scripts/FHIRValidationAction
+          repository: NHSDigital/IOPS-FHIR-Test-Scripts
+          sparse-checkout: FHIRValidationAction
           path: validation
 
       - name: Check out validation-service-fhir-r4
