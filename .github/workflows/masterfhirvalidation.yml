@@ -36,14 +36,6 @@ jobs:
           ref: main
           path: validation-service-fhir-r4
 
-      - name: Debug XML file
-        run: |
-          FILE="valuesets/ValueSet-UKCore-ListCode.xml"
-          echo "File size: $(wc -c < "$FILE")"
-          echo "Last 5 lines:"
-          tail -5 "$FILE"
-          echo "Line endings: $(file "$FILE")"
-
       - name: Build validation service
         run: |
           cd validation-service-fhir-r4
