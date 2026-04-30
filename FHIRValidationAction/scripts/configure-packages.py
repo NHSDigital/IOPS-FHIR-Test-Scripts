@@ -15,12 +15,12 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(script_dir, "config.json")
 
 #for github actions
-#test_script_repo_path = f"{Path.cwd()}/validation"
-#package_path = Path.cwd()
+test_script_repo_path = f"{Path.cwd()}/validation"
+package_path = Path.cwd()
 
 #for testing locally
-test_script_repo_path = "." 
-package_path = "./test"
+#test_script_repo_path = "." 
+#package_path = "./test"
 
 with open(config_path,"r") as f:
     config = json.load(f)
