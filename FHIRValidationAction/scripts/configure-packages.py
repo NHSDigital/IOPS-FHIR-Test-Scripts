@@ -68,10 +68,11 @@ def install_package(package_id, version, server_url, failed):
     
     response = requests.post(
         f"{server_url}/ImplementationGuide/$install",
-        json=params,
+        data=json.dumps(params),
         headers={
             "Content-Type": "application/fhir+json",
-            "Accept": "application/fhir+json"}
+            "Accept": "application/fhir+json"
+        }
     )
     if response.status_code in [200, 201]:
         print(f"Installed {package_id}:{version}")
