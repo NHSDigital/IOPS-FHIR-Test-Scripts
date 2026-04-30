@@ -38,9 +38,9 @@ def check_package_locally(package_id, version):
     
 def download_package(package_id, version, failed):
     url = f"https://packages.simplifier.net/{package_id}/{version}"
+    response = requests.get(url)
     print(response.status_code)
     print(response)
-    response = requests.get(url)
     
     if response.status_code == 404:
         print(f"Package {package_id}#{version} not found on registry")
