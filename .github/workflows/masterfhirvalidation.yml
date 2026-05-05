@@ -51,7 +51,7 @@ jobs:
       - name: Start Validation Service
         run: |
           cd validation-service-fhir-r4
-          docker compose up -d
+          docker compose -f docker-compose.ci.yml up -d
         env:
           CI: true
           ONTO_AUTH_URL: https://ontology.nhs.uk/authorisation/auth/realms/nhs-digital-terminology/protocol/openid-connect/token
@@ -85,4 +85,6 @@ jobs:
 
       - name: Stop Validation Service
         if: always()
-        run: docker compose down
+        run: |
+          cd validation-service-fhir-r4
+          docker compose -f docker-compose.ci.yml down
