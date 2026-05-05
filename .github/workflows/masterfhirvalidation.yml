@@ -41,7 +41,7 @@ jobs:
       # 🚀 Pull the prebuilt validator image
       - name: Pull FHIR Validation service image
         run: |
-          docker pull ghcr.io/${{ github.repository_owner }}/validation-service-fhir-r4:latest
+          docker pull ghcr.io/nhsdigital/validation-service-fhir-r4:latest
 
       # ▶️ Start the validation service (no build)
       - name: Start Validation Service
