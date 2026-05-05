@@ -1,5 +1,3 @@
-name: IOPS-FHIR-Validation-Terminology
-
 on:
   workflow_call:
     secrets:
@@ -9,20 +7,22 @@ on:
         required: true
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout repository
+        uses: actions/checkout@v6
         with:
           submodules: true
 
-      - uses: actions/setup-java@v5
+      - name: Set up Java
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '21'
 
-      - name: Check out IOPS-Validation
+      - name: Check out IOPS-Validation scripts
         uses: actions/checkout@v6
         with:
           repository: NHSDigital/IOPS-FHIR-Test-Scripts
@@ -30,23 +30,22 @@ jobs:
           sparse-checkout: FHIRValidationAction
           path: validation
 
-      - name: Check out validation-service-fhir-r4
-        uses: actions/checkout@v6
+      # 🔑 NEW: Authenticate to GHCR (required for private org images)
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
         with:
-          repository: NHSDigital/FHIR-Validation
-          ref: docker-img
-          path: validation-service-fhir-r4
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build validation service
+      # 🚀 Pull the prebuilt validator image
+      - name: Pull FHIR Validation service image
         run: |
-          cd validation-service-fhir-r4
-          mvn -B -ntp package
+          docker pull ghcr.io/${{ github.repository_owner }}/validation-service-fhir-r4:latest
 
+      # ▶️ Start the validation service (no build)
       - name: Start Validation Service
-        run: |
-          cd validation-service-fhir-r4
-          docker compose build
-          docker compose up -d
+        run: docker compose up -d
         env:
           CI: true
           ONTO_AUTH_URL: https://ontology.nhs.uk/authorisation/auth/realms/nhs-digital-terminology/protocol/openid-connect/token
@@ -67,7 +66,7 @@ jobs:
 
           echo "FHIR Validator failed to start in time"
           exit 1
-           
+
       - name: Install FHIR packages
         run: python3 validation/FHIRValidationAction/scripts/configure-packages.py
 
@@ -80,6 +79,4 @@ jobs:
 
       - name: Stop Validation Service
         if: always()
-        run: |
-          cd validation-service-fhir-r4
-          docker compose down
+        run: docker compose down
