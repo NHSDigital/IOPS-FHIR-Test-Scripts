@@ -1,0 +1,26 @@
+<Location xmlns="http://hl7.org/fhir">
+  <id value="UKCore-Location-GeneralPracticeNurseClinic-Example" />
+  <text>
+    <status value="additional" />
+    <div xmlns="http://www.w3.org/1999/xhtml">An example to illustrate a GP clinic location</div>
+  </text>
+  <identifier>
+    <system value="https://fhir.nhs.uk/Id/ods-site-code" />
+    <value value="GP8D7" />
+  </identifier>
+  <name value="WhiteRoseNurseClinic" />
+  <type>
+    <coding>
+      <system value="http://terminology.hl7.org/CodeSystem/v3-RoleCode" />
+      <code value="GIM" />
+      <display value="General internal medicine clinic" />
+    </coding>
+  </type>
+  <telecom>
+    <system value="phone" />
+    <value value="0113 243 3166" />
+  </telecom>
+  <managingOrganization>
+    <reference value="Organization/UKCore-Organization-WhiteRoseMedicalCentre-Example" />
+  </managingOrganization>
+</Location>

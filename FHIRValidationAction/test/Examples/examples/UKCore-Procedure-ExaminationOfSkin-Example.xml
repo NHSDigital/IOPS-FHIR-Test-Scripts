@@ -1,0 +1,19 @@
+<Procedure xmlns="http://hl7.org/fhir">
+  <id value="UKCore-Procedure-ExaminationOfSkin-Example" />
+  <text>
+    <status value="additional" />
+    <div xmlns="http://www.w3.org/1999/xhtml">An example to illustrate a skin examination procedure</div>
+  </text>
+  <status value="completed" />
+  <code>
+    <coding>
+      <system value="http://snomed.info/sct" />
+      <code value="128004" />
+      <display value="Hand microscope examination of skin" />
+    </coding>
+  </code>
+  <subject>
+    <reference value="Patient/UKCore-Patient-RichardSmith-Example" />
+  </subject>
+  <performedDateTime value="2019-12-10T13:00:00+00:00" />
+</Procedure>

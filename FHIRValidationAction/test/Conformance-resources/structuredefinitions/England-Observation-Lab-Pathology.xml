@@ -1,0 +1,239 @@
+<StructureDefinition xmlns="http://hl7.org/fhir">
+  <id value="England-Observation-Lab-Pathology" />
+  <url value="https://fhir.nhs.uk/England/StructureDefinition/England-Observation-Lab-Pathology" />
+  <version value="0.2.1" />
+  <name value="EnglandObservationLabPathology" />
+  <title value="England Observation Lab Pathology" />
+  <status value="draft" />
+  <date value="2026-01-26" />
+  <publisher value="NHS England" />
+  <contact>
+    <name value="NHS England" />
+    <telecom>
+      <system value="email" />
+      <value value="interoperabilityteam@nhs.net" />
+      <use value="work" />
+      <rank value="1" />
+    </telecom>
+  </contact>
+  <description value="This profile defines the NHSE constraints and extensions on the UK FHIR resource, in order to represent an individual laboratory test and result value." />
+  <purpose value="To provide the minimum expectations for each individual laboratory test. This includes the NHSE requirements for PaLM and PBCL Codes in Observation.code" />
+  <copyright value="Copyright © 2021+ HL7 UK Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file except in compliance with the License. You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. HL7® FHIR® standard Copyright © 2011+ HL7 The HL7® FHIR® standard is used under the FHIR license. You may obtain a copy of the FHIR license at  https://www.hl7.org/fhir/license.html." />
+  <fhirVersion value="4.0.1" />
+  <kind value="resource" />
+  <abstract value="false" />
+  <type value="Observation" />
+  <baseDefinition value="http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab" />
+  <derivation value="constraint" />
+  <differential>
+    <element id="Observation.extension:extensionUKCoreObservationOrganizer">
+      <path value="Observation.extension" />
+      <sliceName value="extensionUKCoreObservationOrganizer" />
+      <type>
+        <code value="Extension" />
+        <profile value="http://hl7.org/fhir/6.0/StructureDefinition/extension-Observation.organizer" />
+      </type>
+      <isModifier value="false" />
+    </element>
+    <element id="Observation.category.coding.display.extension:translation">
+      <path value="Observation.category.coding.display.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.category.coding.display.extension:translation.extension">
+      <path value="Observation.category.coding.display.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.category.text.extension:translation">
+      <path value="Observation.category.text.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.category.text.extension:translation.extension">
+      <path value="Observation.category.text.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.code.coding">
+      <path value="Observation.code.coding" />
+      <slicing>
+        <description value="Slicing for Pathology to differentiate between the SNOMED CT ValueSets, PaLM and PCBL" />
+        <rules value="open" />
+      </slicing>
+    </element>
+    <element id="Observation.code.coding.extension:reference">
+      <path value="Observation.code.coding.extension" />
+      <sliceName value="reference" />
+      <type>
+        <code value="Extension" />
+        <profile value="http://hl7.org/fhir/StructureDefinition/valueset-reference" />
+      </type>
+    </element>
+    <element id="Observation.code.coding.display.extension:translation">
+      <path value="Observation.code.coding.display.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.code.coding.display.extension:translation.extension">
+      <path value="Observation.code.coding.display.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.code.coding:pathology-PaLM">
+      <path value="Observation.code.coding" />
+      <sliceName value="pathology-PaLM" />
+      <binding>
+        <strength value="extensible" />
+        <description value="This slice is to denote the code comes from the Pathology and laboratory medicine observable entity simple reference set" />
+        <valueSet value="https://fhir.nhs.uk/England/ValueSet/England-PathologyAndLaboratoryMedicineObservables" />
+      </binding>
+    </element>
+    <element id="Observation.code.coding:pathology-PaLM.extension:reference-palm-observables">
+      <path value="Observation.code.coding.extension" />
+      <sliceName value="reference-palm-observables" />
+      <type>
+        <code value="Extension" />
+        <profile value="http://hl7.org/fhir/StructureDefinition/valueset-reference" />
+      </type>
+    </element>
+    <element id="Observation.code.coding:pathology-PaLM.extension:reference-palm-observables.value[x]">
+      <path value="Observation.code.coding.extension.value[x]" />
+      <fixedUri value="https://fhir.hl7.org.uk/ValueSet/UKCore-PathologyAndLaboratoryMedicineObservables" />
+    </element>
+    <element id="Observation.code.coding:pathology-PaLM.display.extension:translation">
+      <path value="Observation.code.coding.display.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.code.coding:pathology-PaLM.display.extension:translation.extension">
+      <path value="Observation.code.coding.display.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.code.coding:pathology-PBCL">
+      <path value="Observation.code.coding" />
+      <sliceName value="pathology-PBCL" />
+      <binding>
+        <strength value="extensible" />
+        <description value="This slice is to denote the code comes from the Pathology Bounded Code List observables simple reference set" />
+        <valueSet value="https://fhir.nhs.uk/England/ValueSet/England-PathologyBoundedCodeListObservables" />
+      </binding>
+    </element>
+    <element id="Observation.code.coding:pathology-PBCL.extension:reference-pbcl-observables">
+      <path value="Observation.code.coding.extension" />
+      <sliceName value="reference-pbcl-observables" />
+      <type>
+        <code value="Extension" />
+        <profile value="http://hl7.org/fhir/StructureDefinition/valueset-reference" />
+      </type>
+    </element>
+    <element id="Observation.code.coding:pathology-PBCL.extension:reference-pbcl-observables.value[x]">
+      <path value="Observation.code.coding.extension.value[x]" />
+      <fixedUri value="https://fhir.hl7.org.uk/ValueSet/UKCore-PathologyBoundedCodeListObservables" />
+    </element>
+    <element id="Observation.code.coding:pathology-PBCL.display.extension:translation">
+      <path value="Observation.code.coding.display.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.code.coding:pathology-PBCL.display.extension:translation.extension">
+      <path value="Observation.code.coding.display.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.code.text.extension:translation">
+      <path value="Observation.code.text.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.code.text.extension:translation.extension">
+      <path value="Observation.code.text.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.value[x]:valueCodeableConcept">
+      <path value="Observation.value[x]" />
+      <sliceName value="valueCodeableConcept" />
+    </element>
+    <element id="Observation.value[x]:valueCodeableConcept.coding.display.extension:translation">
+      <path value="Observation.value[x].coding.display.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.value[x]:valueCodeableConcept.coding.display.extension:translation.extension">
+      <path value="Observation.value[x].coding.display.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.value[x]:valueCodeableConcept.text.extension:translation">
+      <path value="Observation.value[x].text.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.value[x]:valueCodeableConcept.text.extension:translation.extension">
+      <path value="Observation.value[x].text.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.interpretation">
+      <path value="Observation.interpretation" />
+      <binding>
+        <strength value="extensible" />
+        <valueSet value="https://fhir.nhs.uk/England/ValueSet/England-DeviatingResultIndicator" />
+      </binding>
+    </element>
+    <element id="Observation.interpretation.coding.display.extension:translation">
+      <path value="Observation.interpretation.coding.display.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.interpretation.coding.display.extension:translation.extension">
+      <path value="Observation.interpretation.coding.display.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.interpretation.text.extension:translation">
+      <path value="Observation.interpretation.text.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.interpretation.text.extension:translation.extension">
+      <path value="Observation.interpretation.text.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.method.coding.display.extension:translation">
+      <path value="Observation.method.coding.display.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.method.coding.display.extension:translation.extension">
+      <path value="Observation.method.coding.display.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.method.text.extension:translation">
+      <path value="Observation.method.text.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.method.text.extension:translation.extension">
+      <path value="Observation.method.text.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.component.code.coding.display.extension:translation">
+      <path value="Observation.component.code.coding.display.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.component.code.coding.display.extension:translation.extension">
+      <path value="Observation.component.code.coding.display.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.component.code.text.extension:translation">
+      <path value="Observation.component.code.text.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.component.code.text.extension:translation.extension">
+      <path value="Observation.component.code.text.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.component.value[x]:valueCodeableConcept">
+      <path value="Observation.component.value[x]" />
+      <sliceName value="valueCodeableConcept" />
+    </element>
+    <element id="Observation.component.value[x]:valueCodeableConcept.coding.display.extension:translation">
+      <path value="Observation.component.value[x].coding.display.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.component.value[x]:valueCodeableConcept.coding.display.extension:translation.extension">
+      <path value="Observation.component.value[x].coding.display.extension.extension" />
+      <min value="2" />
+    </element>
+    <element id="Observation.component.value[x]:valueCodeableConcept.text.extension:translation">
+      <path value="Observation.component.value[x].text.extension" />
+      <sliceName value="translation" />
+    </element>
+    <element id="Observation.component.value[x]:valueCodeableConcept.text.extension:translation.extension">
+      <path value="Observation.component.value[x].text.extension.extension" />
+      <min value="2" />
+    </element>
+  </differential>
+</StructureDefinition>

@@ -1,0 +1,12 @@
+
+{
+  "fhir-validator": {
+    "base_url": "http://localhost:8080/fhir"
+  },
+  "paths": {
+    "test_script": "test",
+    "package": "test/package.json",
+    "test_assets": "test/Conformance-resources",
+    "test_examples": "test/Examples"
+  }
+}

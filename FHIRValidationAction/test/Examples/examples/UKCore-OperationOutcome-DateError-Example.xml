@@ -1,0 +1,20 @@
+<OperationOutcome xmlns="http://hl7.org/fhir">
+  <id value="UKCore-OperationOutcome-DateError-Example" />
+  <text>
+    <status value="additional" />
+    <div xmlns="http://www.w3.org/1999/xhtml">An example to illustrate an error returned from an API call, due to an error in a date</div>
+  </text>
+  <issue>
+    <severity value="fatal" />
+    <code value="structure" />
+    <details>
+      <coding>
+        <system value="http://terminology.hl7.org/CodeSystem/operation-outcome" />
+        <code value="MSG_DATE_FORMAT" />
+        <display value="The Date value %s is not in the correct format (Xml Date Format required)" />
+      </coding>
+    </details>
+    <diagnostics value="Interop.FHIRProcessors.Patient.processbirthDate line 2450" />
+    <expression value="Patient.birthDate" />
+  </issue>
+</OperationOutcome>

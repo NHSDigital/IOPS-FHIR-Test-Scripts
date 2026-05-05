@@ -1,0 +1,37 @@
+<Observation xmlns="http://hl7.org/fhir">
+  <id value="UKCore-Observation-TobaccoConsumption-Example" />
+  <text>
+    <status value="additional" />
+    <div xmlns="http://www.w3.org/1999/xhtml">An example to illustrate a tobacco consumption observation</div>
+  </text>
+  <status value="final" />
+  <category>
+    <coding>
+      <system value="http://terminology.hl7.org/CodeSystem/observation-category" />
+      <code value="social-history" />
+      <display value="Social History" />
+    </coding>
+  </category>
+  <code>
+    <coding>
+      <system value="http://snomed.info/sct" />
+      <code value="266918002" />
+      <display value="Tobacco smoking consumption" />
+    </coding>
+    <text value="Tobacco consumption" />
+  </code>
+  <subject>
+    <reference value="Patient/UKCore-Patient-RichardSmith-Example" />
+  </subject>
+  <effectiveDateTime value="2026-01-16" />
+  <performer>
+    <reference value="Organization/UKCore-Organization-LeedsTeachingHospital-Example" />
+  </performer>
+  <valueCodeableConcept>
+    <coding>
+      <system value="http://snomed.info/sct" />
+      <code value="160603005" />
+      <display value="Light cigarette smoker (1-9 cigs/day)" />
+    </coding>
+  </valueCodeableConcept>
+</Observation>
