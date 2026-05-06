@@ -30,7 +30,6 @@ SERVER_URL = config["fhir-validator"]["base_url"]
 def check_package_locally(package_id, version):
     name = f"{package_id}-{version}.tgz"
     for _, _, files in os.walk(f"{test_script_repo_path}/packages"):
-        print(files)
         if name in files:
             return True
     return False
