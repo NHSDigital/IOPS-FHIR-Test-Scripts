@@ -14,12 +14,19 @@ config_path = os.path.join(script_dir, "config.json")
 
 with open(config_path,"r") as f:
     config = json.load(f)
-#ROOT = './test' #used for local testing
+#ROOT = './FHIRValidationAction/test' #used for local testing
 ROOT = Path.cwd() #used for github actions
+
+# used to store file in correct place whether ran locally or via github
+if ROOT == Path.cwd():
+    operation_outcome_file_path = f"{ROOT}+/validation/FHIRValidationAction/operation_outcomes.json"
+else:
+    operation_outcome_file_path = f"./FHIRValidationAction/operation_outcomes.json"
+
 SERVER_URL = config["fhir-validator"]["base_url"]
+IGNORE_FOLDERS = {"validation", "validation-service-fhir-r4"} # do not upload or validate anything in validation or test-script repos
 
-IGNORE_FOLDERS = {"validation", "validation-service-fhir-r4"}
-
+# Combination of exisiting filepaths and firely's
 ASSETS_FOLDERS = [
     "CapabilityStatement",
     "StructureDefinition",
@@ -43,7 +50,7 @@ EXAMPLES_FOLDERS = ["Examples"]
 
 def get_json_info(file_path, failed):
     try:
-        with open(file_path) as f:
+        with open(file_path, encoding='utf-8') as f:
             resource = json.load(f)
         
         resource_type = resource.get('resourceType')
@@ -153,7 +160,7 @@ def validate_resource(file_path, resource, resource_id, resource_type, format, o
         # $validate always returns an OperationOutcome
         outcome = response.json()
         operation_outcomes.update({str(file_path):outcome})
-
+        print(f"Validated {resource_type}/{resource_id}")
         return True
 
     except Exception as e:
@@ -203,9 +210,9 @@ def main():
     if len(all_files) == 0:
         return 0
 
-    print(f"Uploading {len(all_asset_files)} FHIR assets and {len(all_example_files)} FHIR examples...")
+    print(f"Uploading {len(all_asset_files)} FHIR assets...")
                     
-            
+    # upload assets first        
     for file_path, format in all_asset_files:
         get_info = get_json_info if format == "json" else get_xml_info
         result = get_info(file_path, failed)
@@ -222,7 +229,8 @@ def main():
             continue
 
 
-
+    # validate assets and examples
+    print(f"Validating {len(all_asset_files)} FHIR assets and {len(all_example_files)} FHIR examples...")        
     for file_path, format in all_files:
         get_info = get_json_info if format == "json" else get_xml_info
         result = get_info(file_path, failed)
@@ -234,8 +242,8 @@ def main():
 
         validate_resource(file_path, resource, resource_id, resource_type, format, operation_outcomes, failed)
     
-    dump_json('operation_outcomes.json',failed)
-    dump_json('operation_outcomes.json',operation_outcomes)
+    dump_json(operation_outcome_file_path, failed)
+    dump_json(operation_outcome_file_path, operation_outcomes)
 
   
     if failed:
