@@ -25,7 +25,7 @@ def parse_validation_output(results_file, ignore_list):
                 severity = "passed"
             
             if is_ignored(issue, ignore_list, severity, diagnostics):
-                continue
+                severity = "passed"
             # expression and location are both lists of strings
             expression = issue.get("expression", [])
             location = issue.get("location", [])
@@ -131,7 +131,7 @@ def main():
 | 🔴 Errors | {len(errors)} |
 | 🟡 Warnings | {len(warnings)} |
 | 🔵 Information | {len(information)} |
-| 🟢 Passes | {len(passes)} |
+| 🟢 Passes (incl. hidden issues) | {len(passes)} |
 
 ---
 {render_section("Failed Uploads", "⚠️", failures, "red")}
