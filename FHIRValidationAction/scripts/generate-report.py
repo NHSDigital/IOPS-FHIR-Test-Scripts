@@ -6,18 +6,17 @@ from pathlib import Path
 import sys
 
 #for local testing
-#ROOT = Path.cwd()
+#ROOT = Path.cwd() / "FHIRValidationAction"
 
 #for github repo
 ROOT = Path.cwd() / "validation" / "FHIRValidationAction"
 
 def parse_validation_output(results_file, ignore_list):
-    with open(results_file) as f:
-        data = json.load(f)
+    
     
     issues = {"fatal": [], "error": [], "warning": [], "information": [], "failure": [], "passed": []}
     
-    for file_path, outcome in data.items():
+    for file_path, outcome in results_file.items():
         for issue in outcome.get("issue", []):
             severity = issue.get("severity", "").lower()
             diagnostics = issue.get("diagnostics", "")
@@ -107,10 +106,14 @@ def render_section(title, emoji, issues, colour):
 
 def main():
     with open(f"{ROOT}/scripts/ignore-list.yaml", "r") as f:
-        ignore_list = yaml.safe_load(f)
-    print(ignore_list)
-
-    results_file = "operation_outcomes.json"
+            ignore_list = yaml.safe_load(f)
+    
+    try:
+        with open(f"{ROOT}/operation_outcomes.json") as f:
+            results_file = json.load(f)    
+    except:
+        print("No operation_outcomes.json found. Skipping generating report")
+        return 0
 
     issues = parse_validation_output(results_file, ignore_list)
     failures = issues["failure"]
@@ -152,10 +155,10 @@ def main():
     else:
         print(summary)
     
-    for filename in ["failed", "operation_outcomes"]:
-        filepath = f"./{filename}.json"
-        if os.path.exists(filepath):
-            os.remove(filepath)
+    
+    filepath = f"{ROOT}/operation_outcomes.json"
+    if os.path.exists(filepath):
+        os.remove(filepath)
     
     major_issues = len(failures)+len(fatals)+len(errors)
     if major_issues > 0:
