@@ -19,7 +19,7 @@ ROOT = Path.cwd() #used for github actions
 
 # used to store file in correct place whether ran locally or via github
 if ROOT == Path.cwd():
-    operation_outcome_file_path = f"{ROOT}+/validation/FHIRValidationAction/operation_outcomes.json"
+    operation_outcome_file_path = f"{ROOT}/validation/FHIRValidationAction/operation_outcomes.json"
 else:
     operation_outcome_file_path = f"./FHIRValidationAction/operation_outcomes.json"
 
