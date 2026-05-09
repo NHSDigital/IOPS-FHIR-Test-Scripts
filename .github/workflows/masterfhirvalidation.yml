@@ -47,6 +47,10 @@ jobs:
       - name: Pull FHIR Validation service image
         run: |
           docker pull ghcr.io/nhsdigital/validation-service-fhir-r4:latest
+      
+      - name: Add Packages to hapi.application.yaml
+        run: | 
+          python3 validation/FHIRValidationAction/scripts/configure-packages-application-yaml.py
 
       - name: Start Validation Service
         run: |
@@ -73,8 +77,13 @@ jobs:
           echo "FHIR Validator failed to start in time"
           exit 1
 
-      - name: Install FHIR packages
-        run: python3 validation/FHIRValidationAction/scripts/configure-packages.py
+      # wait for package to be installed
+      # tbd
+      # ensure no package installation failed
+      # tbd
+
+      #- name: Install FHIR packages via $install
+      #  run: python3 validation/FHIRValidationAction/scripts/configure-packages.py
 
       - name: Upload FHIR assets + Examples
         run: python3 validation/FHIRValidationAction/scripts/upload-assets.py
