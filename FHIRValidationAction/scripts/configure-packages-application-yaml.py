@@ -51,7 +51,10 @@ def add_packages_to_application_yaml(source_json, target_yaml=application_yaml):
             'version': version,
             'installMode': 'STORE_AND_INSTALL'
         }
-
+        
+        if 'implementationguides' not in data['hapi']['fhir']:
+            data['hapi']['fhir']['implementationguides'] = {}
+        
         data['hapi']['fhir']['implementationguides'][package_key] = package_entry
 
     with open(application_yaml, "w") as f:
