@@ -13,8 +13,8 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(script_dir, "config.json")
 
 #for github actions
-test_script_repo_path = f"{Path.cwd()}/validation/FHIRValidationAction"
-package_path = f"{Path.cwd()}"
+test_script_repo_path = f"./validation/FHIRValidationAction"
+package_path = "."
 application_yaml = "./validation-service-fhir-r4/hapi.application.yaml"
 
 
