@@ -77,11 +77,13 @@ jobs:
 
           echo "FHIR Validator failed to start in time"
           exit 1
-
+  
       # wait for package to be installed
       # tbd
       # ensure no package installation failed
       # tbd
+      - name: Wait for package to be installed
+        run: sleep 60
 
       #- name: Install FHIR packages via $install
       #  run: python3 validation/FHIRValidationAction/scripts/configure-packages.py
