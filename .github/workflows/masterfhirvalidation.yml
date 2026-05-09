@@ -50,7 +50,7 @@ jobs:
       
       - name: Add Packages to hapi.application.yaml
         run: | 
-          ls validation/FHIRValidationAction/scripts/
+          pip install ruamel.yaml
           python3 validation/FHIRValidationAction/scripts/configure-packages-application-yaml.py
 
       - name: Start Validation Service
