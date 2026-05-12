@@ -66,22 +66,26 @@ jobs:
 
       - name: Wait for FHIR Validator to be available
         run: |
-          for i in {1..240}; do
+          for i in {1..120}; do
+            # Check for fatal package errors in logs and fail immediately
+            if docker logs fhir-server 2>&1 | grep -q "Unable to locate package\|Unknown resource name\|Error installing IG"; then
+              echo "Fatal HAPI startup error detected:"
+              docker logs fhir-server 2>&1 | grep -E "Unable to locate package|Unknown resource name|Error installing IG"
+              exit 1
+            fi
+
             if curl -sSf http://localhost:8080/fhir/metadata > /dev/null; then
               echo "FHIR Validator is up!"
               exit 0
             fi
-            echo "Waiting for FHIR Validator..."
+
+            echo "Waiting for FHIR Validator... attempt $i/60"
             sleep 10
           done
-
           echo "FHIR Validator failed to start in time"
+          docker logs fhir-server 2>&1 | tail -50
           exit 1
   
-      # wait for package to be installed
-      # tbd
-      # ensure no package installation failed
-      # tbd
       - name: Wait for package to be installed
         run: sleep 60
 

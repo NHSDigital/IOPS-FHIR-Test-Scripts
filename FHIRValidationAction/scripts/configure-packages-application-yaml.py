@@ -13,15 +13,15 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(script_dir, "config.json")
 
 #for github actions
-test_script_repo_path = f"./validation/FHIRValidationAction"
-package_path = "."
-application_yaml = "./validation-service-fhir-r4/hapi.application.yaml"
+#test_script_repo_path = f"./validation/FHIRValidationAction"
+#package_path = "."
+#application_yaml = "./validation-service-fhir-r4/hapi.application.yaml"
 
 
 #for testing locally
-#test_script_repo_path = "./FHIRValidationAction" 
-#package_path = "./FHIRValidationAction/test"
-#application_yaml = "../FHIR-Validation/hapi.application.yaml"
+test_script_repo_path = "./FHIRValidationAction" 
+package_path = "../NHSEngland-FHIR-Programme-Pathology" #"./FHIRValidationAction/test"
+application_yaml = "../FHIR-Validation/hapi.application.yaml"
 
 with open(config_path,"r") as f:
     config = json.load(f)
@@ -87,7 +87,7 @@ def add_private_packages_to_application_yaml(source_yaml, target_yaml=applicatio
 
     with open(target_yaml, "w") as f:
         yaml.dump(target, f)
-    return len(value)
+    return len(source_guides)
 
 def get_package_dependencies(package_path):
     try:       
@@ -108,7 +108,7 @@ def main():
     num_packages = add_packages_to_application_yaml(package_path)
     num_private_packages = add_private_packages_to_application_yaml(f"{package_path}/private.package.yaml")
   
-    print(f"\nAdded {num_packages}+{num_private_packages} packages for installation")
+    print(f"\nAdded {num_packages+num_private_packages} packages for installation")
     return 0
 
 if __name__ == "__main__":
