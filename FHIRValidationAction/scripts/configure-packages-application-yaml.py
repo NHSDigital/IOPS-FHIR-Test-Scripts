@@ -43,10 +43,6 @@ def add_packages_to_application_yaml(source_json, target_yaml=application_yaml):
         data = yaml.load(f)
     
     for package_name, version in package_dependencies.items():
-
-        if package_name == "hl7.fhir.r4.core": # ignore otherwise causes error if 
-            continue
-
         print(f'\tAdding {package_name} : {version}')
         package_key = package_name.replace('.', '-')
         
