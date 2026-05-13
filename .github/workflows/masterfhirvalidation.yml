@@ -85,9 +85,6 @@ jobs:
           echo "FHIR Validator failed to start in time"
           docker logs fhir-server 2>&1 | tail -50
           exit 1
-  
-      - name: Wait for package to be installed
-        run: sleep 60
 
       #- name: Install FHIR packages via $install
       #  run: python3 validation/FHIRValidationAction/scripts/configure-packages.py
