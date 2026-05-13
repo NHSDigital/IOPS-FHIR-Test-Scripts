@@ -76,6 +76,7 @@ jobs:
 
             if curl -sSf http://localhost:8080/fhir/metadata > /dev/null; then
               echo "FHIR Validator is up!"
+              sleep 10 #ensure package are installed. This will need to be changed to something better e.g. ensure "fhir is lit" before moving on
               exit 0
             fi
 
