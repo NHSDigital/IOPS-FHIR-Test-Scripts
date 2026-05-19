@@ -41,15 +41,27 @@ def add_packages_to_application_yaml(source_json, target_yaml=application_yaml):
     
     with open(application_yaml, "r") as f:
         data = yaml.load(f)
+
+    # Core packages to skip so HAPI doesn't try to reinstall baked-in resources
+    core_packages_to_skip = {
+        "hl7.fhir.r2.core", 
+        "hl7.fhir.r3.core", 
+        "hl7.fhir.r4.core", 
+        "hl7.fhir.r5.core"
+    }
     
     for package_name, version in package_dependencies.items():
+        if package_name in core_packages_to_skip:
+            print(f"\tSkipping core package: {package_name}")
+            continue
         print(f'\tAdding {package_name} : {version}')
         package_key = package_name.replace('.', '-')
         
         package_entry = {
             'name': package_name,
             'version': version,
-            'installMode': 'STORE_AND_INSTALL'
+            'installMode': 'STORE_AND_INSTALL',
+            'fetchDependencies': True
         }
         
         if 'implementationguides' not in data['hapi']['fhir']:
