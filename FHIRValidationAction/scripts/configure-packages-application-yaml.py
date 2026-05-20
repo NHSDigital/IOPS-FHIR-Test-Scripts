@@ -61,7 +61,10 @@ def add_packages_to_application_yaml(source_json, target_yaml=application_yaml):
             'name': package_name,
             'version': version,
             'installMode': 'STORE_AND_INSTALL',
-            'fetchDependencies': True
+            'fetchDependencies': True,
+            'dependencyExcludes': [
+                'hl7.fhir.uv.extensions.r4'
+            ]
         }
         
         if 'implementationguides' not in data['hapi']['fhir']:
