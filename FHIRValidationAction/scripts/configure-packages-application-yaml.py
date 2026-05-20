@@ -7,21 +7,22 @@ import os
 from common import dump_json
 from pathlib import Path
 from ruamel.yaml import YAML
+from ruamel.yaml.comments import CommentedSeq
 
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(script_dir, "config.json")
 
 #for github actions
-test_script_repo_path = f"./validation/FHIRValidationAction"
-package_path = "."
-application_yaml = "./validation-service-fhir-r4/hapi.application.yaml"
+#test_script_repo_path = f"./validation/FHIRValidationAction"
+#package_path = "."
+#application_yaml = "./validation-service-fhir-r4/hapi.application.yaml"
 
 
 #for testing locally
-#test_script_repo_path = "./FHIRValidationAction" 
-#package_path = "../NHSEngland-FHIR-Programme-Pathology" #"./FHIRValidationAction/test"
-#application_yaml = "../FHIR-Validation/hapi.application.yaml"
+test_script_repo_path = "./FHIRValidationAction" 
+package_path = "../NHSEngland-FHIR-Programme-Pathology" #"./FHIRValidationAction/test"
+application_yaml = "../FHIR-Validation/hapi.application.yaml"
 
 with open(config_path,"r") as f:
     config = json.load(f)
@@ -30,6 +31,8 @@ SERVER_URL = config["fhir-validator"]["base_url"]
 def add_packages_to_application_yaml(source_json, target_yaml=application_yaml):
     yaml = YAML()
     yaml.preserve_quotes = True
+    yaml.indent(mapping=2, sequence=4, offset=2)
+
 
     package_dependencies = get_package_dependencies(source_json)    
      
@@ -57,14 +60,13 @@ def add_packages_to_application_yaml(source_json, target_yaml=application_yaml):
         print(f'\tAdding {package_name} : {version}')
         package_key = package_name.replace('.', '-')
         
+
         package_entry = {
             'name': package_name,
             'version': version,
             'installMode': 'STORE_AND_INSTALL',
             'fetchDependencies': True,
-            'dependencyExcludes': [
-                'hl7.fhir.uv.extensions.r4'
-            ]
+            'dependencyExcludes': ['hl7.fhir.uv.extensions.r4','hl7.terminology.r4']
         }
         
         if 'implementationguides' not in data['hapi']['fhir']:
