@@ -14,15 +14,15 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(script_dir, "config.json")
 
 #for github actions
-#test_script_repo_path = f"./validation/FHIRValidationAction"
-#package_path = "."
-#application_yaml = "./validation-service-fhir-r4/hapi.application.yaml"
+test_script_repo_path = f"./validation/FHIRValidationAction"
+package_path = "."
+application_yaml = "./validation-service-fhir-r4/hapi.application.yaml"
 
 
 #for testing locally
-test_script_repo_path = "./FHIRValidationAction" 
-package_path = "../NHSDigital-FHIR-Genomics-ImplementationGuide" #"./FHIRValidationAction/test"
-application_yaml = "../FHIR-Validation/hapi.application.yaml"
+#test_script_repo_path = "./FHIRValidationAction" 
+#package_path = "../NHSDigital-FHIR-Genomics-ImplementationGuide" #"./FHIRValidationAction/test"
+#application_yaml = "../FHIR-Validation/hapi.application.yaml"
 
 with open(config_path,"r") as f:
     config = json.load(f)
