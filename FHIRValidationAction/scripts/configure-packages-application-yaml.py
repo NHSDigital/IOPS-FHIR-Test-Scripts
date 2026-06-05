@@ -21,7 +21,7 @@ config_path = os.path.join(script_dir, "config.json")
 
 #for testing locally
 test_script_repo_path = "./FHIRValidationAction" 
-package_path = "../NHSEngland-FHIR-Programme-Pathology" #"./FHIRValidationAction/test"
+package_path = "../NHSDigital-FHIR-Genomics-ImplementationGuide" #"./FHIRValidationAction/test"
 application_yaml = "../FHIR-Validation/hapi.application.yaml"
 
 with open(config_path,"r") as f:
@@ -91,6 +91,8 @@ def add_private_packages_to_application_yaml(source_yaml, target_yaml=applicatio
 
     with open(target_yaml, "r") as f:
         target = yaml.load(f)
+        if 'implementationguides' not in target['hapi']['fhir']:
+            target['hapi']['fhir']['implementationguides'] = {}
 
     print(f"Adding private FHIR packages for installation...")
     # Merge the implementationguides from source into target
