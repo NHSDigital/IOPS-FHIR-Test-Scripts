@@ -1,5 +1,6 @@
 ignore-list:
-  error: ~
+  error:
+    - http://hl7.eu/fhir/base/StructureDefinition/patient-animal-eu-core #currently blocked by a limitation in hl7-base. https://hl7.eu/fhir/laboratory/StructureDefinition-Patient-animal-eu-lab.html
   warning: 
     - dom-6 #ignore "A resource should have narrative for robust management"
   information: ~
