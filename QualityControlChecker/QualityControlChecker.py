@@ -232,7 +232,7 @@ def checkExamples(exampleWarnings, example):
             except:
                 exampleWarnings.append("\t\tid - This element is missing")        
     else:
-        exampleWarnings.append("\t\tThe file extension SHALL be .xml or .json")
+        print('\t',example,'is neither in xml or json format and has not been checked')
     return exampleWarnings
         
             
