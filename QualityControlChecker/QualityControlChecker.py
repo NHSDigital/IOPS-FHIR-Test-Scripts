@@ -209,11 +209,11 @@ def checkAssets(file, warnings):
 
 def checkExamples(exampleWarnings, example):
     fileName = os.path.splitext(example)[0]
-    if not fileName.endswith("-Example") :
-        exampleWarnings.append("\t\tThe filename is does not have the suffix '-Example'")
-    
+        
     '''open file to find element values'''
     if example.endswith("xml"):
+        if not fileName.endswith("-Example") :
+            exampleWarnings.append("\t\tThe filename is does not have the suffix '-Example'")
         root, exampleWarnings = openXMLFile("examples",example, exampleWarnings)
         if root != {}:
             try:
@@ -222,6 +222,8 @@ def checkExamples(exampleWarnings, example):
             except:
                 exampleWarnings.append("\t\tid - This element is missing")
     elif example.endswith("json"):
+        if not fileName.endswith("-Example") :
+            exampleWarnings.append("\t\tThe filename is does not have the suffix '-Example'")
         elements, exampleWarnngs = openJSONFile("examples",example, exampleWarnings)
         if elements != {}:
             try:
