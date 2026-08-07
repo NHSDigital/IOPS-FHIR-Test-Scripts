@@ -53,6 +53,10 @@ jobs:
           pip install ruamel.yaml
           python3 validation/FHIRValidationAction/scripts/configure-packages-application-yaml.py
 
+      - name: Show implementation guides
+        run: |
+          grep -A100 "implementationguides" validation-service-fhir-r4/hapi.application.yaml
+
       - name: Start Validation Service
         run: |
           cd validation-service-fhir-r4
@@ -86,6 +90,9 @@ jobs:
 
       #- name: Install FHIR packages via $install
       #  run: python3 validation/FHIRValidationAction/scripts/configure-packages.py
+      - name: Check HAPI package installation
+        run: |
+          docker logs fhir-server 2>&1 | grep -iE "package|hl7.fhir.r4.core|implementationguide|terminology" || true
 
       - name: Upload FHIR assets + Examples
         run: python3 validation/FHIRValidationAction/scripts/upload-assets.py
