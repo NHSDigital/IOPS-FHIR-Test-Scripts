@@ -1,0 +1,7 @@
+{
+  "server": "http://127.0.0.1:8080/fhir/metadata",
+  "paths": {
+    "pass": "/pass",
+    "fail": "/fail"
+  }
+}

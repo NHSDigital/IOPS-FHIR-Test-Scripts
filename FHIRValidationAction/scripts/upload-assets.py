@@ -250,7 +250,7 @@ def main():
         print(f"\nFailed to upload {len(failed)} assets / examples:")
         for f in failed:
             print(f"  - {f}")
-    print(f"\nSuccessfully uploaded {len(all_asset_files)} FHIR assets and {len(all_example_files)} FHIR examples")
+    print(f"\nSuccessfully uploaded {len(all_asset_files)+len(all_example_files)-len(failed)} out of  {len(all_asset_files)+len(all_example_files)} FHIR assets and examples")
     return 0
 
 if __name__ == "__main__":
